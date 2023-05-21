@@ -85,4 +85,9 @@ public class AirbusController {
 		return AirbusDTO.createAirbusDTOListFromModelList(airbusService.findByExample(example.buildAirbusModel()),
 				false);
 	}
+	
+	@GetMapping("/listaAirbusEvidenziandoSovrapposizioni")
+	public List<AirbusDTO> listaAirbusConSovrapposizioni() {
+		return airbusService.listaAirbusConSovrapposizioni();
+	}
 }
