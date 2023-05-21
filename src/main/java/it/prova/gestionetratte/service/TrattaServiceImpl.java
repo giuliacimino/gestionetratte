@@ -62,6 +62,12 @@ repository.deleteById(idToRemove);
 	public List<Tratta> cercaPerCodiceEDescrizione(String codice, String descrizione) {
 		return repository.findByCodiceAndDescrizione(codice, descrizione);
 	}
+
+	@Override
+	public void concludiTratte() {
+		repository.concludiTratte();
+		
+	}
 	
 	
 	

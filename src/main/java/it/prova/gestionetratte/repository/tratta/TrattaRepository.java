@@ -17,5 +17,7 @@ public interface TrattaRepository extends CrudRepository<Tratta, Long>, CustomTr
 	
 	List<Tratta> findByCodiceAndDescrizione (String codice, String descrizione);
 	
+	
+	
 
 }

@@ -1,5 +1,6 @@
 package it.prova.gestionetratte.repository.tratta;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,13 +11,20 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import it.prova.gestionetratte.dto.TrattaDTO;
+import it.prova.gestionetratte.model.Stato;
 import it.prova.gestionetratte.model.Tratta;
 
 public class CustomTrattaRepositoryImpl implements CustomTrattaRepository{
 	
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	
+	@Autowired
+	TrattaDTO trattaDTO;
 
 	@Override
 	public List<Tratta> findByExample(Tratta example) {
@@ -60,6 +68,15 @@ public class CustomTrattaRepositoryImpl implements CustomTrattaRepository{
 		}
 
 		return typedQuery.getResultList();
+	}
+
+	@Override
+	public void concludiTratte() {
+		if (trattaDTO.getStato() == Stato.ATTIVA) {
+			if (trattaDTO.getOraAtterraggio().isBefore(LocalTime.now())) {
+				trattaDTO.setStato(Stato.CONCLUSA);
+			}
+		}
 	}
 	
 	

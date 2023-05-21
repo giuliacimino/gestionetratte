@@ -39,7 +39,7 @@ public class GestionetratteApplication implements CommandLineRunner {
 			airbusService.inserisciNuovo(airbus1);
 		}
 
-		Tratta tratta1 = new Tratta("GGWG", "descrizioneTratta1", LocalDate.of(2022, 12, 19), LocalTime.of(15, 05), LocalTime.of(17, 30),Stato.ATTIVA, airbus1);
+		Tratta tratta1 = new Tratta("GGWG", "roma-bologna", LocalDate.of(2022, 12, 19), LocalTime.of(15, 05), LocalTime.of(17, 30),Stato.ATTIVA, airbus1);
 		if (trattaService.cercaPerCodiceEDescrizione(tratta1.getCodice(),tratta1.getDescrizione()).isEmpty())
 			trattaService.inserisciNuovo(tratta1);
 
@@ -52,7 +52,7 @@ public class GestionetratteApplication implements CommandLineRunner {
 			airbusService.inserisciNuovo(airbus2);
 		}
 
-		Tratta tratta2 = new Tratta("FHDH", "descrizione2", LocalDate.of(2021, 2, 19), LocalTime.of(17, 8), LocalTime.of(21, 42), Stato.CONCLUSA, airbus2);
+		Tratta tratta2 = new Tratta("FHDH", "milano-roma", LocalDate.of(2021, 2, 19), LocalTime.of(17, 8), LocalTime.of(21, 42), Stato.CONCLUSA, airbus2);
 		if (trattaService.cercaPerCodiceEDescrizione(tratta2.getCodice(), tratta2.getDescrizione()).isEmpty())
 			trattaService.inserisciNuovo(tratta2);
 		

@@ -24,7 +24,7 @@ public class TrattaDTO {
 	@NotBlank(message = "{codice.notblank}")
 	private String codice;
 
-	@NotBlank(message = "{decrizione.notblank}")
+	@NotBlank(message = "{descrizione.notblank}")
 	private String descrizione;
 
 	@NotNull(message = "{data.notnull}")
