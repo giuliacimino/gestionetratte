@@ -1,12 +1,15 @@
 package it.prova.gestionetratte.service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.prova.gestionetratte.exception.TrattaNonAnnullataException;
 import it.prova.gestionetratte.exception.TrattaNotFoundException;
+import it.prova.gestionetratte.model.Stato;
 import it.prova.gestionetratte.model.Tratta;
 import it.prova.gestionetratte.repository.tratta.TrattaRepository;
 
@@ -48,9 +51,14 @@ public class TrattaServiceImpl implements TrattaService {
 
 	@Transactional
 	public void rimuovi(Long idToRemove) {
-		repository.findById(idToRemove)
-		.orElseThrow(() -> new TrattaNotFoundException("Tratta not found con id: " + idToRemove));
-repository.deleteById(idToRemove);
+			Tratta trattaToBeRemoved = repository.findById(idToRemove)
+					.orElseThrow(() -> new TrattaNotFoundException("Tratta not found con id: " + idToRemove));
+			
+			if (trattaToBeRemoved.getStato() != Stato.ANNULLATA) {
+				throw new TrattaNonAnnullataException(
+						"non è possibile eliminare una tratta non annullata.");
+			}
+			repository.deleteById(idToRemove);
 		
 	}
 
@@ -64,10 +72,29 @@ repository.deleteById(idToRemove);
 	}
 
 	@Override
-	public void concludiTratte() {
-		repository.concludiTratte();
-		
+	@Transactional(readOnly = true)
+	public List<Tratta> trovaTratteAttive(Stato stato) {
+		stato= Stato.ATTIVA;
+		return repository.findTratteAttive(stato);
 	}
+
+	@Override
+	public List<Tratta> concludiTratte(Stato stato) {
+		List<Tratta> tratteAttive= repository.findTratteAttive(stato);
+		for (Tratta trattaItem: tratteAttive) {
+			if (trattaItem.getOraAtterraggio().isBefore(LocalTime.now())) {
+				trattaItem.setStato(Stato.CONCLUSA);
+			}
+		}
+		repository.saveAll(tratteAttive);
+		return tratteAttive;
+	}
+	
+	
+	
+	
+
+
 	
 	
 	

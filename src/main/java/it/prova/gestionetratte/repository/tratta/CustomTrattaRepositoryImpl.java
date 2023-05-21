@@ -23,8 +23,6 @@ public class CustomTrattaRepositoryImpl implements CustomTrattaRepository{
 	private EntityManager entityManager;
 	
 	
-	@Autowired
-	TrattaDTO trattaDTO;
 
 	@Override
 	public List<Tratta> findByExample(Tratta example) {
@@ -70,14 +68,7 @@ public class CustomTrattaRepositoryImpl implements CustomTrattaRepository{
 		return typedQuery.getResultList();
 	}
 
-	@Override
-	public void concludiTratte() {
-		if (trattaDTO.getStato() == Stato.ATTIVA) {
-			if (trattaDTO.getOraAtterraggio().isBefore(LocalTime.now())) {
-				trattaDTO.setStato(Stato.CONCLUSA);
-			}
-		}
-	}
+
 	
 	
 	

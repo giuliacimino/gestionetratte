@@ -30,8 +30,7 @@ public class AirbusController {
 	@Autowired
 	AirbusService airbusService;
 	
-	@Autowired
-	AirbusDTO airbusDTO;
+	
 	
 
 	@GetMapping
@@ -77,9 +76,7 @@ public class AirbusController {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable(required = true) Long id) {
-		if (airbusDTO.getTratte() !=null) {
-			throw new TrattaNotFoundException("impossibile elimiare un airbus associato a tratte");
-		}
+		
 		airbusService.rimuovi(id);
 	}
 	

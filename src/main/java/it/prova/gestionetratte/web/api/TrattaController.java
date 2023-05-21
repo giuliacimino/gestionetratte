@@ -31,8 +31,7 @@ public class TrattaController {
 	@Autowired
 	TrattaService trattaService;
 	
-	@Autowired
-	TrattaDTO trattaDTO;
+
 	
 	@GetMapping
 	public List<TrattaDTO> getAll() {
@@ -76,9 +75,7 @@ public class TrattaController {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable(required = true) Long id) {
-		if (trattaDTO.getStato() != Stato.ANNULLATA) {
-			throw new TrattaNonAnnullataException("impossibile eliminare tratte non annullate");
-		}
+		
 
 		trattaService.rimuovi(id);
 	}
@@ -88,11 +85,15 @@ public class TrattaController {
 	return TrattaDTO.createTrattaDTOListFromModelList(trattaService.findByExample(example.buildTrattaModel()),
 	false);
 	}
+
 	
-	@PostMapping("/concluditratte")
-	public void concludiTratte() {
-		trattaService.concludiTratte();
+	@GetMapping("/concluditratte")
+	public List<TrattaDTO> concludiTratte(Stato stato){
+		return TrattaDTO.createTrattaDTOListFromModelList(trattaService.concludiTratte(stato), true) ;
 	}
+	
+	
+	
 	
 	
 

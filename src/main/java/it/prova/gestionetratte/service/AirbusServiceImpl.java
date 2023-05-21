@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.gestionetratte.exception.AirbusNotFoundException;
+import it.prova.gestionetratte.exception.TratteAirbusNotNullException;
 import it.prova.gestionetratte.model.Airbus;
 import it.prova.gestionetratte.repository.airbus.AirbusRepository;
 
@@ -50,10 +51,15 @@ public class AirbusServiceImpl implements AirbusService {
 	
 	@Transactional
 	public void rimuovi(Long idToRemove) {
-		repository.findById(idToRemove)
-		.orElseThrow(() -> new AirbusNotFoundException ("Airbus not found con id: " + idToRemove));
+		Airbus airbusToDelete = repository.findById(idToRemove)
+				.orElseThrow(() -> new AirbusNotFoundException("Airbus not found con id: " + idToRemove));
+		if (airbusToDelete == null) {
+			throw new AirbusNotFoundException("Airbus not found con id: "+ idToRemove);
+		}
+		if (!airbusToDelete.getTratte().isEmpty()) {
+			throw new TratteAirbusNotNullException("non è possibile eliminare un airbus con tratte!");
+		}
 		repository.deleteById(idToRemove);
-		
 	}
 
 	public List<Airbus> findByExample(Airbus example) {

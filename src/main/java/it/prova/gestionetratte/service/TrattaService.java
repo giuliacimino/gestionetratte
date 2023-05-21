@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
+import it.prova.gestionetratte.model.Stato;
 import it.prova.gestionetratte.model.Tratta;
 
 public interface TrattaService{
@@ -24,6 +25,10 @@ public interface TrattaService{
 	
 	List<Tratta> cercaPerCodiceEDescrizione (String codice, String descrizione);
 	
-	void concludiTratte ();
+	List<Tratta> trovaTratteAttive(Stato stato);
+	
+	List<Tratta> concludiTratte(Stato stato);
+	
+	
 
 }
